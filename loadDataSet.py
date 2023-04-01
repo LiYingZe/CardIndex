@@ -333,32 +333,3 @@ def DMVLoader():
     ZD = arraydec2Z(D,tok=None)
     print(ZD.shape)
     np.save('./data/DMV-ZD.npy', ZD)
-if __name__ == "__main__":
-    # ZD = np.load('./data/osmZD.npy')
-    # DMVnploader()
-    # decfilename = sys.argv[1]
-    for i in range(8):
-        i=7
-        fullname = './data/osm'+str(2**i)+'M.npy'
-        print(fullname,'converting2ZD')
-        D = np.load(fullname)
-        print(D.shape)
-        print('D successfully loadded')
-        ZD = arraydec2Z(D,tok=None)
-        print('ZD loaded')
-        print(ZD.shape)
-        np.save('./data/osm'+str(2**i)+'M-ZD.npy', ZD)
-        print('SAVED')
-        exit(1)
-    toprows = int(sys.argv[1])
-    t0 = time.time()
-    readosm('./data/map/ca.osm',toprows)
-    t1 = time.time()
-    print("D loaded ",t1-t0)
-    osm2zorder()
-    t2 = time.time()
-    print("ZD converted" , t2-t1)
-
-    # D = loadNumer( './data/power.txt',True)
-    # print(D.shape)
-    # print(D[0])

@@ -181,27 +181,27 @@ def QueryGen(D,QueryNumber,sel=1.0):
     # for j in range(c):
     #     wi.append()
     allCard=0
-    Q1 = []
-    Q001 = []
-    Q00001 = []
+    QH = []
+    QL = []
+    QExL = []
     QX = []
-    q1card=0
-    q001card=0
-    q00001card=0
+    QHcard=0
+    QLcard=0
+    QExLcard=0
     presel=1
     maxCN = 2
     minCN = 1
     # presel=0
     for i in range(QueryNumber*10):
-        print(len(Q1),len(Q001),len(Q00001),len(QX))
+        print(len(QH),len(QL),len(QExL),len(QX))
         print('generating Q:',i)
-        if(len(Q1)>=QueryNumber):
+        if(len(QH)>=QueryNumber):
             presel = 0.01
             maxCN = int(c/2)+1
-        if(len(Q001)>=QueryNumber):
+        if(len(QL)>=QueryNumber):
             presel = 0.0001
             maxCN = c
-        if (len(Q00001) >= QueryNumber):
+        if (len(QExL) >= QueryNumber):
             presel = 0.0
             maxCN  = c
         wi = []
@@ -234,22 +234,22 @@ def QueryGen(D,QueryNumber,sel=1.0):
         #     break
         # continue
         if cardsel >=0.01:
-            if (len(Q1) < querynum):
-                Q1.append(Q)
-                q1card+=card
+            if (len(QH) < querynum):
+                QH.append(Q)
+                QHcard+=card
         elif cardsel >=0.0001:
-            if (len(Q001) < querynum):
-                Q001.append(Q)
-                q001card+=card
+            if (len(QL) < querynum):
+                QL.append(Q)
+                QLcard+=card
         else:
-            if (len(Q00001) < querynum):
-                Q00001.append(Q)
-                q00001card+=card
+            if (len(QExL) < querynum):
+                QExL.append(Q)
+                QExLcard+=card
             else:
                 if card == 1:
                     QX.append(Q)
 
-        if len(Q1)>=querynum and len(Q001)>=querynum and len(Q00001)>=querynum  :
+        if len(QH)>=querynum and len(QL)>=querynum and len(QExL)>=querynum  :
             break
         print( card)
 
@@ -278,9 +278,9 @@ def QueryGen(D,QueryNumber,sel=1.0):
     #     Q.assignTN(scan(D,Q))
     #     Q.assignBinaryDig(BinaryDig)
     print('AvgCardSel:',allCard/(querynum))
-    print(q1card/(r*100),q001card/(r*100),q00001card/(r*100))
-    print(len(Q1),len(Q001),len(Q00001),len(QX))
-    return Q1,Q001,Q00001,QX
+    print(QHcard/(r*100),QLcard/(r*100),QExLcard/(r*100))
+    print(len(QH),len(QL),len(QExL),len(QX))
+    return QH,QL,QExL,QX
     # exit(1)
     return Querys
 
@@ -338,15 +338,6 @@ def regenerateCSV():
 import sys
 import pandas as pd
 if __name__ == "__main__":
-    # regenerateCSV()
-    # exit(1)
-    # filename = './data/title_sample_10000.csv'
-    # filename= './data/power.txt'
-    decfile = './data/osmfile.npy'
-    D = np.load(decfile)
-    df = pd.DataFrame(D)
-    print(df.nunique())
-    exit(1)
     querynum = int(sys.argv[1])
     sel = float(sys.argv[2])
     data = sys.argv[3]
@@ -360,75 +351,24 @@ if __name__ == "__main__":
     if data == 'osm':
         decfile = './data/osmfile.npy'
         D = np.load(decfile)
-        Q1,Q001,Q00001,QX =  QueryGen(D,querynum,sel)
-        writeQs(Q1,outfile+'1')
-        writeQs(Q001,outfile+'001')
-        writeQs(Q00001,outfile+'00001')
-        # writeQs(QX,outfile + 'X')
-        # # KDBStyleQGen(Q1,outfile+'1'+'KDBQ')
-        # # KDBStyleQGen(Q001,outfile+'001'+'KDBQ')
-        # # KDBStyleQGen(Q00001,outfile+'00001'+'KDBQ')
-        # KDBStyleQGen(QX,outfile+'X'+'KDBQ')
-    elif data == 'scale':
-        for i in range(8):
-            i=7
-            name = './data/osm'+str(2**i)+'M.npy'
-            D = np.load(name)
-            Q1,Q001,Q00001,QX =  QueryGen(D,querynum,sel)
-            # writeQs(Q1,outfile+str(2**i)+'M'+'1')
-            # writeQs(Q001,outfile+str(2**i)+'M'+'001')
-            # writeQs(Q00001,outfile+str(2**i)+'M'+'00001')
-            writeQs(QX,outfile+str(2**i)+'M' + 'X')
-            # KDBStyleQGen(Q1,outfile+str(2**i)+'M'+'1'+'KDBQ')
-            # KDBStyleQGen(Q001,outfile+str(2**i)+'M'+'001'+'KDBQ')
-            # KDBStyleQGen(Q00001,outfile+str(2**i)+'M'+'00001'+'KDBQ')
-            KDBStyleQGen(QX,outfile+str(2**i)+'M'+'X'+'KDBQ')
-            exit(1)
-
+        QH,QL,QExL,QX =  QueryGen(D,querynum,sel)
+        writeQs(QH,outfile )
+        writeQs(QL,outfile+'001')
+        writeQs(QExL,outfile+'00001')
     elif data =='power':
         decfile = './data/powerOri.npy'
         D = np.load(decfile)
-        Q1,Q001,Q00001,QX =  QueryGen(D,querynum,sel)
-        writeQs(Q1,outfile+'1')
-        writeQs(Q001,outfile+'001')
-        writeQs(Q00001,outfile+'00001')
-        # writeQs(QX,outfile + 'X')
-        # KDBStyleQGen(Q1,outfile+'1'+'KDBQ')
-        # KDBStyleQGen(Q001,outfile+'001'+'KDBQ')
-        # KDBStyleQGen(Q00001,outfile+'00001'+'KDBQ')
-        # KDBStyleQGen(QX,outfile+'X'+'KDBQ')
+        QH,QL,QExL,QX =  QueryGen(D,querynum,sel)
+        writeQs(QH,outfile+'1')
+        writeQs(QL,outfile+'001')
+        writeQs(QExL,outfile+'00001')
+ 
     elif data == 'DMV':
         decfile = './data/DMVint.npy'
         D = np.load(decfile)
-        Q1,Q001,Q00001,QX =  QueryGen(D,querynum,sel)
-        writeQs(Q1,outfile+'1')
-        writeQs(Q001,outfile+'001')
-        writeQs(Q00001,outfile+'00001')
-        # writeQs(QX,outfile + 'X')
-        # KDBStyleQGen(Q1,outfile+'1'+'KDBQ')
-        # KDBStyleQGen(Q001,outfile+'001'+'KDBQ')
-        # KDBStyleQGen(Q00001,outfile+'00001'+'KDBQ')
-        # KDBStyleQGen(QX,outfile+'X'+'KDBQ')
+        QH,QL,QExL,QX =  QueryGen(D,querynum,sel)
+        writeQs(QH,outfile+'1')
+        writeQs(QL,outfile+'001')
+        writeQs(QExL,outfile+'00001')
+ 
     
-    exit(1)
-
-
-    # trainSingleNet(filename)
-    # D = np.load('./data/powerOri.npy')
-
-    # D = loadDataSet.loadNumer(filename,smallData=False)
-    # print(D.shape)
-    # exit(1)
-    # exit(1)
-
-
-    # writeQs(Qs,'./data/IMDBRangeQuerys.txt')
-    # writeQs(Qs, './data/xPowerQuerys.txt')
-    # writeQs(Qs,r'./contrastExp/CardBaseline/Querys.txt')
-    # KDBStyleQGen(Qs, r'./contrastExp/KDB-Tree-master/Example/KDBQuerys.txt')
-    # print(Qs[0].BinaryDig)
-    #
-    # for q0 in Qs:
-    #     print()
-    #     print(q0)
-    #     print(q0.trueNumber)

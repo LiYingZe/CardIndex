@@ -367,19 +367,10 @@ def trainprocedure(decfile,zfile,trainiter,leafnum,dataname=None,link=30):
     # MADE2File('./Model/MADE.pt', './Model/MadeRoot.txt')
 
 if __name__ =="__main__":
-    # net = torch.load('./Model/MADE.pt')
-    # print(net(torch.zeros((1,10)).cuda()  ))
-
-    # decfile = './data/osmfile.npy'
-    # zfile = './data/osmZD.npy'
-
-
     leafs = int(sys.argv[1])
     trainloops = int(sys.argv[2])
     data = sys.argv[3]
     print('leafsNumber: ',leafs,'Training loops ',trainloops,'data: ',data)
-    # print('lf',leafs,'tl',trainloops,'d',data)
-    # exit(1)
     t0 = time.time()
     if data == 'osm':
         decfile = './data/osmfile.npy'
@@ -395,55 +386,6 @@ if __name__ =="__main__":
         decfile = './data/DMVint.npy'
         zfile = './data/DMV-ZD.npy'
         trainT=trainprocedure(decfile, zfile, trainloops, leafnum=leafs,dataname=data)
-    elif 'link' in data:
-        print("lk")
-        # exit(1)
-        decfile = './data/powerOri.npy'
-        zfile = './data/power-ZD.npy'
-        linknum = int(sys.argv[4])
-        trainT=trainprocedure(decfile, zfile, trainloops, leafnum=leafs,dataname=data,link=linknum)
-
-    elif data == 'osm1M':
-        decfile = './data/osm1M.npy'
-        zfile = './data/osm1M-ZD.npy'
-        trainT=trainprocedure(decfile, zfile, trainloops, leafnum=leafs,dataname=data)
-    elif data == 'osm2M':
-        decfile = './data/osm2M.npy'
-        zfile = './data/osm2M-ZD.npy'
-        trainT=trainprocedure(decfile, zfile, trainloops, leafnum=leafs,dataname=data)
-    elif data == 'osm4M':
-        decfile = './data/osm4M.npy'
-        zfile = './data/osm4M-ZD.npy'
-        trainT=trainprocedure(decfile, zfile, trainloops, leafnum=leafs,dataname=data)
-    elif data == 'osm8M':
-        decfile = './data/osm8M.npy'
-        zfile = './data/osm8M-ZD.npy'
-        trainT=trainprocedure(decfile, zfile, trainloops, leafnum=leafs,dataname=data)
-    elif data == 'osm16M':
-        decfile = './data/osm16M.npy'
-        zfile = './data/osm16M-ZD.npy'
-        trainT=trainprocedure(decfile, zfile, trainloops, leafnum=leafs,dataname=data)
-    elif data == 'osm32M':
-        decfile = './data/osm32M.npy'
-        zfile = './data/osm32M-ZD.npy'
-        trainT=trainprocedure(decfile, zfile, trainloops, leafnum=leafs,dataname=data)
-    elif data == 'osm64M':
-        decfile = './data/osm64M.npy'
-        zfile = './data/osm64M-ZD.npy'
-        trainT=trainprocedure(decfile, zfile, trainloops, leafnum=leafs,dataname=data)
-    elif data == 'osm128M':
-        decfile = './data/osm128M.npy'
-        zfile = './data/osm128M-ZD.npy'
-        trainT=trainprocedure(decfile, zfile, trainloops, leafnum=leafs,dataname=data)
-    
-    
-    # elif data == 'osm1M':
-    #     decfile = './data/osm1M.npy'
-    #     zfile = './data/osm1M-ZD.npy'
-    #     trainprocedure(decfile, zfile, trainloops, leafnum=leafs,dataname=data)
-    
-
-
     t1 = time.time()
     print('construction takes:',t1-t0)
     print("Traing Takes:" ,trainT)
@@ -451,60 +393,4 @@ if __name__ =="__main__":
     f.write('Building Time:'+str(t1-t0))
     f.write("\nTraining:"+str(trainT))
     f.close()
-    # ZD = np.load(zfile)
-    # r,c = ZD.shape
-    # leafnum = 100
-    # connectlen = 10
-    # net = torch.load('./Model/MADE.pt')
-    # MADE2File('./Model/MADE.pt', './Model/MadeRoot.txt',r,c,connectlen,leafnum)
-    # print(net(torch.zeros((1,5)   ).cuda()  ))
-    # print(ZD.shape)
-    # print(np.sum(ZD[:,0]))
-
-
-
-
-    # decfile = './data/osmfile.npy'
-    # zfile = './data/osmZD.npy'
-    #
-    # trainMADE(zfile)
-    #
-    # #0010
-    # # rootFile = './Model/MADE.pt'
-    # # net = torch.load(rootFile)
-    # # print(net(torch.zeros((1,93)).cuda() ))
-    # # exit(1)
-    #
-    # net = torch.load('./Model/MADE.pt')
-    # D = np.load('./data/powerOri.npy')
-    # ZD = np.load('./data/power-ZD.npy')
-    # rootPartition(D,ZD,100,30)
-    # # MADE2File('./Model/MADE.pt', './Model/MadeRoot.txt')
-    # # xinput = torch.zeros((1,93)).cuda()
-    # # print((net(xinput) ) + 0.0)
-    # # p0=[]
-    # # for name, p in net.named_parameters():
-    # #     p0.append(p.cpu().detach().numpy())
-    # #
-    # #
-    # # for i in range(30):
-    #
-    # MADE2File('./Model/MADE.pt','./Model/MadeRoot.txt')
-    # # parameterL = []
-    # # idx=0
-    # # for name, p in net.named_parameters():
-    # #     pa = p.cpu().detach().numpy()
-    # #     if 1 in pa.shape:
-    # #         pa = pa.reshape(-1)
-    # #     parameterL.append(pa.tolist())
-    # #     idx+=1
-    # # s0 = ""
-    # # for it in parameterL:
-    # #     sit = str(it)
-    # #     sit = sit.replace('[', ' ')
-    # #     sit = sit.replace(']', '\n')
-    # #     sit = sit.replace(',', ' ')
-    # #     s0 += sit
-    # #     s0 += '\n'
-    # # print(s0)
-    # # return s0
+    
